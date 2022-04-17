@@ -20,6 +20,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.timer = 0;
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
@@ -70,7 +71,7 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 6, first: 0}),
             frameRate: 30
         });
 
@@ -109,23 +110,36 @@ class Play extends Phaser.Scene {
 
         // GAME OVER flag
         this.gameOver = false;
+        this.gamePaused = false;
 
         // 60-second play clock
         this.pauseText = this.add.text(game.config.width/2, game.config.height/2, 'GAME PAUSED', endConfig).setOrigin(0.5).setVisible(false);
         this.PausePromt = this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', endConfig).setOrigin(0.5).setVisible(false);
-        scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', endConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', endConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this); 
+        //this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+        //    this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', endConfig).setOrigin(0.5);
+        //    this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', endConfig).setOrigin(0.5);
+        //    this.gameOver = true;
+        //}, null, this); 
+        
 
 
     }
 
 
-    update() {
+    update(time,delta) {
         // check key input for restart 
+        if(this.gameOver == false){
+            this.timer += delta;
+            //print(this.timer);
+        }
+        if(this.timer > 45000){
+            this.pauseText.setText("GAME OVER");
+            this.pauseText.setVisible(true);
+            this.PausePromt.setVisible(true);
+            this.gameOver = true;
+            this.gamePaused = true;
+        }
+
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -134,11 +148,12 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keyESC)) {
+        if(Phaser.Input.Keyboard.JustDown(keyESC) && this.gamePaused == false) {
             if(this.gameOver){
                 this.PausePromt.setVisible(false);
                 this.pauseText.setVisible(false);
                 this.gameOver = false;
+
             }else{
                 this.pauseText.setVisible(true);
                 this.PausePromt.setVisible(true);
