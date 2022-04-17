@@ -6,6 +6,7 @@ class Menu extends Phaser.Scene {
   preload() {
     // load audio
     this.load.audio('sfx_select', './assets/kira.wav');
+    this.load.audio('bgm', './assets/Reiiden.mp3');
     this.load.audio('sfx_explosion', './assets/explode.wav');
     this.load.audio('sfx_rocket', './assets/charge.wav');
     this.load.image('bg', './assets/menu.png');
@@ -49,6 +50,7 @@ class Menu extends Phaser.Scene {
           playermode: 0
         }
         this.sound.play('sfx_select');
+        this.sound.play('bgm');
         this.scene.start("playScene");    
       }
       if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
