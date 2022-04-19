@@ -27,19 +27,15 @@ class Play extends Phaser.Scene {
         this.back = this.add.tileSprite(0, game.config.height - 56, 640, 64, 'bBack').setOrigin(0, 0);
         this.front = this.add.tileSprite(0, game.config.height- 64, 640, 64, 'bFront').setOrigin(0, 0);
 
-        // green UI background
+        // UI background
         this.add.rectangle(0, 0, game.config.width, borderUISize * 2, 0x000000).setOrigin(0, 0).setDepth(2);
         this.add.sprite(0, 0, 'bar').setOrigin(0, 0).setDepth(3);
-        // white borders
-        //this.add.rectangle(0, 0, game.config.width, borderUISize*1.2, 0x2E0800).setOrigin(0 ,0);
-        //this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
         this.add.sprite(game.config.width - borderUISize, 0, 'bound').setOrigin(0, 0).setDepth(1);
         this.add.sprite(0, 0, 'bound').setOrigin(0, 0).setDepth(1).setFlipX(true);
-        //this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
-        //this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0 ,0);
 
-        // add Rocket (p1)
-        
+
+
+        // add Rocket(s)
         if(game.settings.playermode == 1) {
             this.p1Rocket = new Rocket(this, game.config.width/3, game.config.height - borderUISize - borderPadding, 'card').setOrigin(0.5, 0).setScale(0.3,0.3);
             this.p2Rocket = new Rocket(this, 2*game.config.width/3, game.config.height - borderUISize - borderPadding, 'card', 1).setOrigin(0.5, 0).setScale(0.3,0.3);
@@ -112,14 +108,9 @@ class Play extends Phaser.Scene {
         this.gameOver = false;
         this.gamePaused = false;
 
-        // 60-second play clock
+        //Pause UI
         this.pauseText = this.add.text(game.config.width/2, game.config.height/2, 'GAME PAUSED', endConfig).setOrigin(0.5).setVisible(false);
         this.PausePromt = this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', endConfig).setOrigin(0.5).setVisible(false);
-        //this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-        //    this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', endConfig).setOrigin(0.5);
-        //    this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', endConfig).setOrigin(0.5);
-        //    this.gameOver = true;
-        //}, null, this); 
         
 
 
@@ -148,6 +139,7 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
+        //Pause Game
         if(Phaser.Input.Keyboard.JustDown(keyESC) && this.gamePaused == false) {
             if(this.gameOver){
                 this.PausePromt.setVisible(false);
@@ -217,8 +209,11 @@ class Play extends Phaser.Scene {
     }
 
     shipExplode(ship,player = 0) {
-        // temporarily hide ship
+        // add time to timer
         this.timer -= 1000;
+
+
+        // temporarily hide ship
         ship.alpha = 0;                         
         // create explosion sprite at ship's position
         let boom = this.add.sprite(ship.x-16, ship.y-8, 'explosion').setOrigin(0, 0);

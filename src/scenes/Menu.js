@@ -61,6 +61,7 @@ class Menu extends Phaser.Scene {
           playermode: 1
         }
         this.sound.play('sfx_select');
+        this.sound.play('bgm');
         this.scene.start("playScene");    
       }
     }

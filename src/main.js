@@ -11,9 +11,12 @@ Point Breakdown:
 -Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60):
     The whole game is redesigned as Touhou theme following it's PC-98 aesthetic.
 
--Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
+-Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20):
+    each hit adds 1 second to the clock.
 
 -Implement parallax scrolling (10)
+
+-Implement a pause menu (10)
 
 -Add your own (copyright-free) background music to the Play scene (5)
 
